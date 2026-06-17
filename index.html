@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>総務タスク自動化システム | TEsJapan</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Hiragino Sans', 'Meiryo', sans-serif; color: #333; }
+
+    /* PDF BUTTON */
+    .pdf-btn-wrap {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+    }
+    .pdf-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 99px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 8px 24px rgba(102,126,234,0.4);
+    }
+    @media print {
+      .pdf-btn-wrap { display: none; }
+      .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .cta-section { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .flow-num { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      padding: 80px 20px;
+      text-align: center;
+    }
+    .hero .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 99px;
+      padding: 6px 20px;
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(26px, 5vw, 42px);
+      line-height: 1.4;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+    .hero h1 span { color: #64b5f6; }
+    .hero p {
+      font-size: 16px;
+      line-height: 1.8;
+      opacity: 0.85;
+      max-width: 600px;
+      margin: 0 auto 36px;
+    }
+    .hero .cta {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 16px 40px;
+      border-radius: 99px;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(102,126,234,0.4);
+    }
+    .hero .price-note {
+      margin-top: 16px;
+      font-size: 13px;
+      opacity: 0.6;
+    }
+
+    /* PROBLEM */
+    .section { padding: 60px 20px; }
+    .section-inner { max-width: 800px; margin: 0 auto; }
+    .section-title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .section-sub {
+      text-align: center;
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 36px;
+    }
+    .problem { background: #fafafa; }
+    .problem-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .problem-item {
+      background: white;
+      border-left: 4px solid #e53935;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 14px;
+      line-height: 1.7;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .problem-item .icon { font-size: 22px; margin-bottom: 8px; }
+
+    /* SOLUTION */
+    .solution { background: white; }
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px dashed #eee;
+    }
+    .flow-step:last-child { border-bottom: none; }
+    .flow-num {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+    .flow-content h3 { font-size: 16px; margin-bottom: 4px; }
+    .flow-content p { font-size: 13px; color: #666; line-height: 1.7; }
+
+    /* FEATURES */
+    .features { background: #f0f2f5; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .feature-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .feature-card .icon { font-size: 36px; margin-bottom: 12px; }
+    .feature-card h3 { font-size: 15px; margin-bottom: 8px; }
+    .feature-card p { font-size: 13px; color: #666; line-height: 1.7; }
+
+    /* PRICE */
+    .price { background: white; }
+    .price-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .price-card {
+      border: 2px solid #eee;
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .price-card.main {
+      border-color: #667eea;
+      box-shadow: 0 8px 24px rgba(102,126,234,0.15);
+      position: relative;
+    }
+    .price-card.main::before {
+      content: 'おすすめ';
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 4px 20px;
+      border-radius: 99px;
+      font-size: 12px;
+    }
+    .price-card h3 { font-size: 16px; color: #666; margin-bottom: 16px; }
+    .price-card .amount { font-size: 36px; font-weight: bold; color: #333; }
+    .price-card .amount span { font-size: 16px; font-weight: normal; color: #888; }
+    .price-card ul {
+      list-style: none;
+      margin-top: 20px;
+      text-align: left;
+    }
+    .price-card ul li {
+      font-size: 13px;
+      padding: 6px 0;
+      border-bottom: 1px solid #f5f5f5;
+      color: #555;
+    }
+    .price-card ul li::before { content: '✓ '; color: #667eea; font-weight: bold; }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .cta-section h2 { font-size: 24px; margin-bottom: 12px; }
+    .cta-section p { font-size: 14px; opacity: 0.85; margin-bottom: 28px; line-height: 1.8; }
+    .cta-section a {
+      display: inline-block;
+      background: white;
+      color: #667eea;
+      padding: 16px 40px;
+      border-radius: 99px;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    /* FOOTER */
+    footer {
+      background: #1a1a2e;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="tag">🏢 中小企業の総務担当者向け</div>
+    <h1>総務タスクの<span>抜け漏れ・手間</span>を<br>ゼロにする自動化システム</h1>
+    <p>Teamsに通知が届き、ボタンを押すだけで完了登録。<br>Excelへの手入力・メール連絡は不要になります。</p>
+    <a href="mailto:tesjapan.gk@gmail.com" class="cta">無料相談・お問い合わせ</a>
+    <div class="price-note">初期費用 80,000円〜 / 月額サポート 15,000円〜</div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="section problem">
+    <div class="section-inner">
+      <div class="section-title">😔 こんなお悩みありませんか？</div>
+      <div class="section-sub">総務担当者が1人で抱えがちな課題</div>
+      <div class="problem-list">
+        <div class="problem-item">
+          <div class="icon">📋</div>
+          年間の定例タスクが多く、抜け漏れが不安
+        </div>
+        <div class="problem-item">
+          <div class="icon">📊</div>
+          Excelの管理表に手動で入力するのが手間
+        </div>
+        <div class="problem-item">
+          <div class="icon">🔔</div>
+          リマインドをメールや口頭で毎回やっている
+        </div>
+        <div class="problem-item">
+          <div class="icon">📉</div>
+          進捗状況が一目でわからず、確認に時間がかかる
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTION -->
+  <section class="section solution">
+    <div class="section-inner">
+      <div class="section-title">✅ 自動化システムで解決します</div>
+      <div class="section-sub">3ステップで完結するシンプルな仕組み</div>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-content">
+            <h3>🔔 Teamsに自動でリマインド通知</h3>
+            <p>毎朝決まった時間に、その時期のタスク一覧がTeamsに届きます。メールや口頭での連絡は不要です。</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-content">
+            <h3>👆 ボタンを押すだけで完了登録</h3>
+            <p>通知メッセージの「✅完了にする」ボタンを押すだけ。Googleスプレッドシートが自動で更新されます。</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-content">
+            <h3>📊 ダッシュボードで進捗を一目確認</h3>
+            <p>完了率・月別集計・未完了タスク一覧がリアルタイムで確認できます。スマホからもアクセス可能。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section features">
+    <div class="section-inner">
+      <div class="section-title">🚀 システムの特徴</div>
+      <div class="section-sub">既存のツールをそのまま活用。新しいシステムを覚える必要なし</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="icon">💬</div>
+          <h3>Teams連携</h3>
+          <p>すでに使っているTeamsに通知が届くので、新しいツールは不要です。</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📱</div>
+          <h3>スマホ対応</h3>
+          <p>外出先でもスマホからボタン操作・ダッシュボード確認ができます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📝</div>
+          <h3>Googleスプレッドシート管理</h3>
+          <p>データはGoogleスプレッドシートで管理。行事の追加・変更も簡単です。</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🔧</div>
+          <h3>月額サポート付き</h3>
+          <p>導入後のエラー対応・行事追加・改善もサポート。安心して使い続けられます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICE -->
+  <section class="section price">
+    <div class="section-inner">
+      <div class="section-title">💰 料金プラン</div>
+      <div class="section-sub">小規模企業でも導入しやすい価格設定</div>
+      <div class="price-cards">
+        <div class="price-card">
+          <h3>初期構築費</h3>
+          <div class="amount">80,000<span>円〜</span></div>
+          <ul>
+            <li>年間タスクリストの設定</li>
+            <li>Teams通知システム構築</li>
+            <li>完了ボタン・自動更新設定</li>
+            <li>ダッシュボード作成</li>
+            <li>操作マニュアル提供</li>
+          </ul>
+        </div>
+        <div class="price-card main">
+          <h3>月額サポート</h3>
+          <div class="amount">15,000<span>円/月〜</span></div>
+          <ul>
+            <li>タスクの追加・変更対応</li>
+            <li>エラー・不具合対応</li>
+            <li>機能改善・カスタマイズ</li>
+            <li>メール・チャット相談対応</li>
+            <li>月次レポート確認サポート</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>まずは無料相談からどうぞ</h2>
+    <p>貴社の総務業務の状況をヒアリングした上で、<br>最適なプランをご提案します。お気軽にご連絡ください。</p>
+    <a href="mailto:tesjapan.gk@gmail.com">📩 無料相談はこちら</a>
+  </section>
+
+  <!-- PDF DOWNLOAD BUTTON -->
+  <div class="pdf-btn-wrap">
+    <button class="pdf-btn" onclick="window.print()">📄 PDFで保存</button>
+  </div>
+
+  <footer>
+    &copy; 2026 TEsJapan. All rights reserved.
+  </footer>
+
+</body>
+</html>
