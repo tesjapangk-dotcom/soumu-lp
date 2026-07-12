@@ -240,6 +240,37 @@
       .hero { padding: 72px 20px 56px; }
       .footer-inner { grid-template-columns: 1fr; gap: 28px; }
     }
+
+    /* SCREENSHOTS */
+    .screenshots { background: #f0f7ff; }
+    .ss-scroll {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 16px;
+      scrollbar-width: thin;
+      scrollbar-color: #bfdbfe transparent;
+    }
+    .ss-scroll::-webkit-scrollbar { height: 6px; }
+    .ss-scroll::-webkit-scrollbar-track { background: transparent; }
+    .ss-scroll::-webkit-scrollbar-thumb { background: #bfdbfe; border-radius: 3px; }
+    .ss-card {
+      flex-shrink: 0;
+      scroll-snap-align: start;
+      width: 580px;
+      max-width: 85vw;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      border: 1px solid #e2e8f0;
+    }
+    .ss-card img { width: 100%; display: block; }
+    .ss-caption { padding: 16px 20px; }
+    .ss-caption strong { font-size: 0.9rem; color: var(--text); display: block; margin-bottom: 4px; }
+    .ss-caption span { font-size: 0.8rem; color: var(--muted); }
   </style>
 </head>
 <body>
@@ -328,6 +359,32 @@
           <div class="dash-bar-row"><span class="month">6月</span><div class="bar-bg"><div class="bar-fill" style="width:100%"></div></div><span class="count">35/35</span></div>
           <div class="dash-bar-row"><span class="month">7月</span><div class="bar-bg"><div class="bar-fill" style="width:0%"></div></div><span class="count">0/11</span></div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="screenshots">
+  <div class="container">
+    <div class="section-tag">SCREENSHOTS</div>
+    <h2>実際の<span style="color:var(--primary)">画面をご覧ください</span></h2>
+    <p class="section-desc">以下はすべて実際に稼働しているシステムの画面です。</p>
+    <div class="ss-scroll">
+      <div class="ss-card">
+        <img src="1.png" alt="総務タスクダッシュボード">
+        <div class="ss-caption"><strong>ダッシュボード</strong><span>今月の完了率・月別完了件数をリアルタイムで確認</span></div>
+      </div>
+      <div class="ss-card">
+        <img src="2.png" alt="タスク一覧">
+        <div class="ss-caption"><strong>タスク一覧</strong><span>月・時期・タスク名・担当部署・状態を一覧管理</span></div>
+      </div>
+      <div class="ss-card">
+        <img src="3.png" alt="Googleスプレッドシート管理">
+        <div class="ss-caption"><strong>Googleスプレッドシート連携</strong><span>タスクデータをシートで管理。担当者が直接追加・変更できます</span></div>
+      </div>
+      <div class="ss-card">
+        <img src="4.png" alt="Teams自動通知">
+        <div class="ss-caption"><strong>Teams自動通知</strong><span>未完了タスクをTeamsに自動通知。ボタンを押すだけで完了登録</span></div>
       </div>
     </div>
   </div>
