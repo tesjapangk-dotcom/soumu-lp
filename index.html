@@ -243,24 +243,9 @@
 
     /* SCREENSHOTS */
     .screenshots { background: #f0f7ff; }
-    .ss-scroll {
-      display: flex;
-      gap: 24px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 16px;
-      scrollbar-width: thin;
-      scrollbar-color: #bfdbfe transparent;
-    }
-    .ss-scroll::-webkit-scrollbar { height: 6px; }
-    .ss-scroll::-webkit-scrollbar-track { background: transparent; }
-    .ss-scroll::-webkit-scrollbar-thumb { background: #bfdbfe; border-radius: 3px; }
+    .ss-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .ss-3col { grid-template-columns: repeat(3, 1fr); }
     .ss-card {
-      flex-shrink: 0;
-      scroll-snap-align: start;
-      width: 580px;
-      max-width: 85vw;
       background: white;
       border-radius: 16px;
       overflow: hidden;
@@ -268,9 +253,10 @@
       border: 1px solid #e2e8f0;
     }
     .ss-card img { width: 100%; display: block; }
-    .ss-caption { padding: 16px 20px; }
+    .ss-caption { padding: 14px 18px; }
     .ss-caption strong { font-size: 0.9rem; color: var(--text); display: block; margin-bottom: 4px; }
-    .ss-caption span { font-size: 0.8rem; color: var(--muted); }
+    .ss-caption span { font-size: 0.78rem; color: var(--muted); }
+    @media (max-width: 640px) { .ss-grid { grid-template-columns: 1fr !important; } }
   </style>
 </head>
 <body>
@@ -369,7 +355,7 @@
     <div class="section-tag">SCREENSHOTS</div>
     <h2>実際の<span style="color:var(--primary)">画面をご覧ください</span></h2>
     <p class="section-desc">以下はすべて実際に稼働しているシステムの画面です。</p>
-    <div class="ss-scroll">
+    <div class="ss-grid">
       <div class="ss-card">
         <img src="1.png" alt="総務タスクダッシュボード">
         <div class="ss-caption"><strong>ダッシュボード</strong><span>今月の完了率・月別完了件数をリアルタイムで確認</span></div>
